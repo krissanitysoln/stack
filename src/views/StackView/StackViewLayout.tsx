@@ -67,6 +67,7 @@ type Props = {
   onGestureEnd?: () => void;
   onGestureCanceled?: () => void;
   screenProps?: unknown;
+  beforePanGestureStateChange?: (nativeEvent: GestureHandlerGestureEventNativeEvent) => boolean;
 };
 
 type State = {
@@ -532,6 +533,15 @@ class StackViewLayout extends React.Component<Props, State> {
   private handlePanGestureStateChange = ({
     nativeEvent,
   }: PanGestureHandlerGestureEvent) => {
+
+    console.log('handlePanGestureStateChange trigger');
+    if(this.props.beforePanGestureStateChange){
+      if(!this.props.beforePanGestureStateChange(nativeEvent)){
+        console.log('handlePanGestureStateChange false');
+        return;
+      }
+    }
+
     // @ts-ignore
     if (nativeEvent.oldState === GestureState.ACTIVE) {
       // Gesture was cancelled! For example, some navigation state update

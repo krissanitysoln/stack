@@ -12,6 +12,9 @@ import {
   TransitionProps,
   Scene,
 } from '../../types';
+import {
+  GestureHandlerGestureEventNativeEvent,
+} from 'react-native-gesture-handler';
 
 type Props = {
   navigation: NavigationStackProp;
@@ -22,6 +25,7 @@ type Props = {
   onGestureCanceled?: () => void;
   onGestureEnd?: () => void;
   screenProps?: unknown;
+  beforePanGestureStateChange?: (nativeEvent: GestureHandlerGestureEventNativeEvent) => boolean;
 };
 
 const USE_NATIVE_DRIVER = Platform.OS === 'android' || Platform.OS === 'ios';
@@ -110,6 +114,7 @@ class StackView extends React.Component<Props> {
         onGestureEnd={this.props.onGestureEnd}
         screenProps={screenProps}
         transitionProps={transitionProps}
+        beforePanGestureStateChange={this.props.beforePanGestureStateChange}
         lastTransitionProps={lastTransitionProps}
       />
     );
